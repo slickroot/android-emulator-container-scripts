@@ -56,9 +56,9 @@ static_resources:
               "@type": type.googleapis.com/envoy.extensions.filters.http.jwt_authn.v3.JwtAuthentication
               providers:
                 firebase_jwt:
-                  issuer: https://securetoken.google.com/android-emulator-webrtc-demo
+                  issuer: https://securetoken.google.com/android-emulator-webrtc-8a806
                   audiences:
-                  - android-emulator-webrtc-demo
+                  - android-emulator-webrtc-8a806
                   remote_jwks:
                     http_uri:
                       uri: https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com
@@ -85,7 +85,7 @@ static_resources:
   - name: jwks_cluster
     connect_timeout: 100s
     dns_lookup_family: V4_ONLY
-    type: strict_dns
+    type: STRICT_DNS
     lb_policy: round_robin
     load_assignment:
       cluster_name: jwks_cluster
@@ -117,9 +117,8 @@ static_resources:
                 port_value: 8554
   - name: nginx
     connect_timeout: 0.25s
-    type: STRICT_DNS
-    lb_policy: ROUND_ROBIN
-    http2_protocol_options: {}
+    type: LOGICAL_DNS
+    dns_lookup_family: V4_ONLY
     load_assignment:
       cluster_name: nginx
       endpoints:
