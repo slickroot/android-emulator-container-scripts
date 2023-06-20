@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { TokenProviderService } from "./service/auth_service";
+import React from "react";
 import EmulatorScreen from "./components/emulator_screen";
-import LoginPage from "./components/login_firebase";
 import { ThemeProvider,  makeStyles } from '@mui/styles';
 import { createTheme } from '@mui/material/styles';
 
@@ -34,27 +32,10 @@ const theme = createTheme({
 
 });
 
-const auth = new TokenProviderService();
-
 export default function App() {
-  const [authorized, setAuthorized] = useState(false);
-
-  useEffect(() => {
-    const handleAuthorization = (a) => {
-      setAuthorized(a);
-    };
-
-    auth.on("authorized", handleAuthorization);
-  }, []);
-
-
   return (
     <ThemeProvider theme={theme}>
-      {authorized ? (
-        <EmulatorScreen uri={EMULATOR_GRPC} auth={auth} />
-      ) : (
-        <LoginPage auth={auth} />
-      )}
+      <EmulatorScreen uri={EMULATOR_GRPC} />
     </ThemeProvider>
   );
 }

@@ -27,7 +27,6 @@ export default class LogcatView extends Component {
 
   static propTypes = {
     uri: PropTypes.string, // grpc endpoint
-    auth: PropTypes.object, // auth module to use.
     maxHistory: PropTypes.number
   };
 
@@ -36,9 +35,9 @@ export default class LogcatView extends Component {
   };
   constructor(props) {
     super(props);
-    const { uri, auth } = this.props;
+    const { uri } = this.props;
     this.buffer = ""
-    this.logcat = new Logcat(uri, auth);
+    this.logcat = new Logcat(uri);
   }
 
   componentDidMount = () => {

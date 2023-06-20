@@ -51,30 +51,6 @@ static_resources:
           - name: envoy.filters.http.cors
             typed_config:
               "@type": type.googleapis.com/envoy.extensions.filters.http.cors.v3.Cors
-          - name: envoy.filters.http.jwt_authn
-            typed_config:
-              "@type": type.googleapis.com/envoy.extensions.filters.http.jwt_authn.v3.JwtAuthentication
-              providers:
-                firebase_jwt:
-                  issuer: https://securetoken.google.com/android-emulator-webrtc-8a806
-                  audiences:
-                  - android-emulator-webrtc-8a806
-                  remote_jwks:
-                    http_uri:
-                      uri: https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com
-                      cluster: jwks_cluster
-                      timeout: 60s
-                    cache_duration:
-                      seconds: 300
-              rules:
-              - match:
-                  prefix: "/android.emulation.control"
-                requires:
-                  provider_name: "firebase_jwt"
-              - match:
-                  prefix: "/android.emulation.control.Rtc"
-                requires:
-                  provider_name: "firebase_jwt"
           - name: envoy.filters.http.grpc_web
             typed_config:
               "@type": type.googleapis.com/envoy.extensions.filters.http.grpc_web.v3.GrpcWeb
