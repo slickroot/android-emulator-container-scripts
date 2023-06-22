@@ -13,20 +13,19 @@ services:
     ports:
       - "80:80"
       - "8001:8001"
-
   emulator:
-    image: emulator_emulator:latest
     build:
-      context: ../../bld/emulator
+      context: ../../simpleemulator
       dockerfile: Dockerfile
     networks:
       envoymesh:
         aliases:
           - emulator
     devices: [/dev/kvm]
-    shm_size: 128M
+    shm_size: 2G
     expose:
       - "8554"
+
   nginx:
     image: emulator_nginx:latest
     build:
