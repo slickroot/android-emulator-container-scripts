@@ -26,6 +26,7 @@ services:
     devices: [/dev/kvm]
     shm_size: 128M
     expose:
+      - "5555"
       - "8554"
   nginx:
     image: emulator_nginx:latest
