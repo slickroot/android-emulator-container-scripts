@@ -21,6 +21,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from '@mui/material/Alert';
+import InstallAPKComponent from '../installapk/InstallAPKComponent';
 
 const styles = (theme) => ({
   root: {
@@ -134,6 +135,9 @@ class EmulatorScreen extends React.Component {
             <Typography variant="h6" className={classes.title}>
               Using emulator view: {view}
             </Typography>
+            <div style={{ flexGrow: 1 }}>
+              <InstallAPKComponent />
+            </div>
 
             {hasAudio ? ( // Only display volume control if this emulator supports audio.
               <Box width={200} paddingTop={1}>

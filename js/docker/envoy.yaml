@@ -35,6 +35,10 @@ static_resources:
                   max_stream_duration:
                     grpc_timeout_header_max: 0s
               - match:
+                  prefix: "/api"
+                route:
+                  cluster: api
+              - match:
                   prefix: "/"
                 route:
                   cluster: nginx
@@ -104,6 +108,20 @@ static_resources:
               socket_address:
                 address: nginx
                 port_value: 80
+  - name: api
+    connect_timeout: 0.25s
+    type: LOGICAL_DNS
+    dns_lookup_family: V4_ONLY
+    load_assignment:
+      cluster_name: api
+      endpoints:
+      - lb_endpoints:
+        - endpoint:
+            address:
+              socket_address:
+                address: api
+                port_value: 3000
+
 admin:
   access_log_path: "/dev/stdout"
   address:
