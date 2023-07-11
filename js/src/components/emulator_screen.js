@@ -128,6 +128,7 @@ class EmulatorScreen extends React.Component {
       hasAudio,
       gps,
     } = this.state;
+    console.log('\n\n\n\nUPDATED\n\n\n\n')
     return (
       <div className={classes.root}>
         <AppBar position="static">
@@ -206,7 +207,6 @@ class EmulatorScreen extends React.Component {
               <Container maxWidth="sm">
                 <Emulator
                   uri={uri}
-                  auth={auth}
                   view={this.state.view}
                   onStateChange={this.stateChange}
                   onAudioStateChange={this.onAudioStateChange}
