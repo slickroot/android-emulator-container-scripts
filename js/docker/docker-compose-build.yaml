@@ -17,7 +17,7 @@ services:
   emulator:
     image: emulator_emulator:latest
     environment:
-      - TURN="printf {\"iceServers\":[{\"urls\":\"turn:$TURN_SERVER\",\"username\":\"webrtc\",\"credential\":\"turnpassword\"}]}"
+      - TURN="printf {\"iceServers\":[{\"urls\":\"turn:lagged.cloud\",\"username\":\"webrtc\",\"credential\":\"turnpassword\"}]}"
     build:
       context: ../../bld/emulator
       dockerfile: Dockerfile
