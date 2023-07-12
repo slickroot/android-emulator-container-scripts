@@ -17,7 +17,7 @@ services:
   emulator:
     image: emulator_emulator:latest
     environment:
-      - TURN={"iceServers":[{"urls":"turn:lagged.cloud"}]}
+      - TURN={"iceServers":[{"urls":"turn:lagged.cloud","username":"","credential":""}}]}
     build:
       context: ../../bld/emulator
       dockerfile: Dockerfile
