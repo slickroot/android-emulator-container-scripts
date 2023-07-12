@@ -16,6 +16,8 @@ services:
 
   emulator:
     image: emulator_emulator:latest
+    environment:
+      - TURN={"iceServers":[{"urls":"turn:lagged.cloud"}]}
     build:
       context: ../../bld/emulator
       dockerfile: Dockerfile
