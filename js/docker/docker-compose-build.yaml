@@ -17,8 +17,7 @@ services:
   emulator:
     image: emulator_emulator:latest
     environment:
-      - SNIPPET="{\"iceServers\":[{\"urls\":\"turn:$TURN_SERVER\",\"username\":\"webrtc\",\"credential\":\"turnpassword\"}]}"
-      - TURN="printf $SNIPPET"
+      - TURN="printf {\"iceServers\":[{\"urls\":\"turn:$TURN_SERVER\",\"username\":\"webrtc\",\"credential\":\"turnpassword\"}]}"
     build:
       context: ../../bld/emulator
       dockerfile: Dockerfile
