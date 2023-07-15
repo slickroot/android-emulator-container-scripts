@@ -17,7 +17,7 @@ services:
   emulator:
     image: emulator_emulator:latest
     environment:
-      - TURN=printf '{"iceServers":[{"urls":["stun:stun.relay.metered.ca:80"]},{"urls":["turn:a.relay.metered.ca:80"],"username":"26053a6b58a7ac6f6b0b6b9b","credential":"7GoWSUk/SCi0DgMR"},{"urls":["turn:a.relay.metered.ca:80?transport=tcp"],"username":"26053a6b58a7ac6f6b0b6b9b","credential":"7GoWSUk/SCi0DgMR"},{"urls":["turn:a.relay.metered.ca:443"],"username":"26053a6b58a7ac6f6b0b6b9b","credential":"7GoWSUk/SCi0DgMR"},{"urls":["turn:a.relay.metered.ca:443?transport=tcp"],"username":"26053a6b58a7ac6f6b0b6b9b","credential":"7GoWSUk/SCi0DgMR"}]}'
+      - TURN=printf '{"iceServers":[{"urls":["stun:stun.lagged.cloud:5349"]},{"urls":["turn:turn.lagged.cloud:5349"],"username":"hamid","credential":"elaich"}]}'
     build:
       context: ../../bld/emulator
       dockerfile: Dockerfile
