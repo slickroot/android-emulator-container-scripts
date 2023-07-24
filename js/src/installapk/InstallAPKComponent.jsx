@@ -4,10 +4,8 @@ import IconButton from "@mui/material/IconButton";
 import InsatllMobileIcon from "@mui/icons-material/InstallMobile";
 import { installAPKFromURL } from "./apkInstaller";
 
-const InstallAPKComponent = () => {
+const InstallAPKComponent = ({ loading, setLoading }) => {
   const [url, setUrl] = useState("")
-  const [loading, setLoading] = useState(false)
-
   const handleInstallAPK = useCallback(async () => {
     setLoading(true)
     installAPKFromURL(url)
