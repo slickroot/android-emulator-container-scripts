@@ -1,4 +1,8 @@
 import React from "react";
+import {
+  RouterProvider,
+  createBrowserRouter,
+} from "react-router-dom";
 import EmulatorScreen from "./components/emulator_screen";
 import { ThemeProvider,  makeStyles } from '@mui/styles';
 import { createTheme } from '@mui/material/styles';
@@ -32,10 +36,26 @@ const theme = createTheme({
 
 });
 
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <EmulatorScreen uri={EMULATOR_GRPC} />
+  },
+  {
+    path: "/launch",
+    loader: ({ request }) => {
+      const url = new URL(request.url)
+      const apkPackage = url.searchParams.get('package')
+      return { apkPackage }
+    },
+    element: <EmulatorScreen uri={EMULATOR_GRPC} />
+  },
+])
+
 export default function App() {
   return (
     <ThemeProvider theme={theme}>
-      <EmulatorScreen uri={EMULATOR_GRPC} />
+      <RouterProvider router={router} />
     </ThemeProvider>
   );
 }
