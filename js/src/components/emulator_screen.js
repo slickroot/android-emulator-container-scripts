@@ -91,8 +91,9 @@ function EmulatorScreen ({ uri, classes }) {
   };
 
   const onError = (err) => {
-    setError_Msg("Low level gRPC error: " + JSON.stringify(err))
-    setError_Snack(true)
+    // TODO: Fix this!!!!!
+    // setError_Msg("Low level gRPC error: " + JSON.stringify(err))
+    // setError_Snack(true)
   }
 
   const updateLocation = () => {
