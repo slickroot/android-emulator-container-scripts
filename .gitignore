@@ -135,3 +135,5 @@ dmypy.json
 # vscode's git plugin is not recursive.
 **/node_modules/
 **/config.js
+
+backend/games
