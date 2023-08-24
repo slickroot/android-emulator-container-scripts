@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import PropTypes from "prop-types"
 import withStyles from "@mui/styles/withStyles"
 import { useLoaderData } from "react-router-dom"
 
@@ -47,7 +48,6 @@ const styles = (theme) => ({
   },
 })
 
-// We want a white slider, otherwise it will be invisible in the appbar.
 const WhiteSlider = withStyles({
   thumb: {
     color: "white",
@@ -60,15 +60,10 @@ const WhiteSlider = withStyles({
   },
 })(Slider)
 
-// This class is responsible for hosting two emulator components next to each other:
-// One the left it will display the emulator, and on the right it will display the
-// active logcat.
-//
-// It uses the material-ui to display a toolbar.
-function EmulatorScreen({ uri, classes }) {
+function EmulatorScreen({ classes, uri }) {
   const [view, setView] = useState("webrtc")
   const [error_snack, setError_Snack] = useState(false)
-  const [error_msg, setError_Msg] = useState("")
+  const [error_msg] = useState("")
   const [emuState, setEmuState] = useState("connecting")
   const [muted, setMuted] = useState(true)
   const [volume, setVolume] = useState(0.0)
@@ -90,7 +85,7 @@ function EmulatorScreen({ uri, classes }) {
     setHasAudio(s)
   }
 
-  const onError = (err) => {
+  const onError = () => {
     // TODO: Fix this!!!!!
     // setError_Msg("Low level gRPC error: " + JSON.stringify(err))
     // setError_Snack(true)
@@ -105,7 +100,7 @@ function EmulatorScreen({ uri, classes }) {
     }
   }
 
-  const handleClose = (e) => {
+  const handleClose = () => {
     setError_Snack(false)
   }
 
@@ -182,7 +177,6 @@ function EmulatorScreen({ uri, classes }) {
               edge="end"
               aria-label="logout"
               color="inherit"
-              onClick={() => auth.logout()}
               size="large"
             >
               <ExitToApp />
@@ -224,6 +218,11 @@ function EmulatorScreen({ uri, classes }) {
       </Snackbar>
     </div>
   )
+}
+
+EmulatorScreen.propTypes = {
+  classes: PropTypes.withStyles,
+  uri: PropTypes.string,
 }
 
 export default withStyles(styles)(EmulatorScreen)
