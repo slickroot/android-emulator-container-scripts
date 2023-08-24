@@ -7,7 +7,7 @@ import { launchAPK } from "../installapk/apkInstaller"
 import AppBar from "@mui/material/AppBar"
 import Box from "@mui/material/Box"
 import Container from "@mui/material/Container"
-import Copyright from "./copyright"
+import Copyright from "../components/Copyright"
 import { Emulator } from "android-emulator-webrtc/emulator"
 import ExitToApp from "@mui/icons-material/ExitToApp"
 import Grid from "@mui/material/Grid"
@@ -24,7 +24,7 @@ import Typography from "@mui/material/Typography"
 import Snackbar from "@mui/material/Snackbar"
 import Alert from "@mui/material/Alert"
 import InstallAPKComponent from "../installapk/InstallAPKComponent"
-import GamesList from "./games_list"
+import GamesList from "../components/games_list"
 
 const styles = (theme) => ({
   root: {

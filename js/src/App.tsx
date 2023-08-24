@@ -1,6 +1,6 @@
 import React from "react"
 import { RouterProvider, createBrowserRouter } from "react-router-dom"
-import EmulatorScreen from "./components/emulator_screen"
+import EmulatorScreen from "./screens/EmulatorScreen"
 import { ThemeProvider } from "@mui/styles"
 import { createTheme } from "@mui/material/styles"
 
