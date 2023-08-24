@@ -1,12 +1,11 @@
 import React, { useState, useCallback } from "react"
-import PropTypes from "prop-types"
 import TextField from "@mui/material/TextField"
 import IconButton from "@mui/material/IconButton"
 import InsatllMobileIcon from "@mui/icons-material/InstallMobile"
 import { installAPKFromURL } from "./apkInstaller"
 
 const InstallAPKComponent = ({ loading, setLoading }) => {
-  const [url, setUrl] = useState("")
+  const [url, setUrl] = useState<string>("")
   const handleInstallAPK = useCallback(async () => {
     setLoading(true)
     installAPKFromURL(url).then(() => {
@@ -37,11 +36,6 @@ const InstallAPKComponent = ({ loading, setLoading }) => {
       </IconButton>
     </div>
   )
-}
-
-InstallAPKComponent.propTypes = {
-  loading: PropTypes.bool,
-  setLoading: PropTypes.func,
 }
 
 export default InstallAPKComponent

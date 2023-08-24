@@ -42,12 +42,11 @@ const styles = (theme) => ({
   paper: {
     marginTop: theme.spacing(4),
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "column" as "column",
     alignItems: "center",
   },
 })
 
-// We want a white slider, otherwise it will be invisible in the appbar.
 const WhiteSlider = withStyles({
   thumb: {
     color: "white",
@@ -60,22 +59,21 @@ const WhiteSlider = withStyles({
   },
 })(Slider)
 
-// This class is responsible for hosting two emulator components next to each other:
-// One the left it will display the emulator, and on the right it will display the
-// active logcat.
-//
-// It uses the material-ui to display a toolbar.
-function EmulatorScreen({ uri, classes }) {
+type LoaderData = {
+  apkPackage: string
+}
+
+function EmulatorScreen({ classes, uri }) {
   const [view, setView] = useState("webrtc")
   const [error_snack, setError_Snack] = useState(false)
-  const [error_msg, setError_Msg] = useState("")
+  const [error_msg] = useState("")
   const [emuState, setEmuState] = useState("connecting")
   const [muted, setMuted] = useState(true)
-  const [volume, setVolume] = useState(0.0)
+  const [volume, setVolume] = useState<number | number[]>(0.0)
   const [hasAudio, setHasAudio] = useState(false)
   const [gps, setGps] = useState({ latitude: 37.4221, longitude: -122.0841 })
   const [loading, setLoading] = useState(false)
-  const loaderData = useLoaderData()
+  const loaderData = useLoaderData() as LoaderData
 
   useEffect(() => {
     console.log("Something changed?")
@@ -85,12 +83,12 @@ function EmulatorScreen({ uri, classes }) {
     }
   }, [loaderData])
 
-  const onAudioStateChange = (s) => {
+  const onAudioStateChange = (s: boolean) => {
     console.log("Received an audio state change from the emulator.")
     setHasAudio(s)
   }
 
-  const onError = (err) => {
+  const onError = () => {
     // TODO: Fix this!!!!!
     // setError_Msg("Low level gRPC error: " + JSON.stringify(err))
     // setError_Snack(true)
@@ -105,11 +103,11 @@ function EmulatorScreen({ uri, classes }) {
     }
   }
 
-  const handleClose = (e) => {
+  const handleClose = () => {
     setError_Snack(false)
   }
 
-  const handleVolumeChange = (e, newVolume) => {
+  const handleVolumeChange = (_event: Event, newVolume: number | number[]) => {
     const muted = newVolume === 0
     setVolume(newVolume)
     setMuted(muted)
@@ -182,7 +180,6 @@ function EmulatorScreen({ uri, classes }) {
               edge="end"
               aria-label="logout"
               color="inherit"
-              onClick={() => auth.logout()}
               size="large"
             >
               <ExitToApp />

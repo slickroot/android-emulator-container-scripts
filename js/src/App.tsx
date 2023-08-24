@@ -1,13 +1,12 @@
 import React from "react"
 import { RouterProvider, createBrowserRouter } from "react-router-dom"
 import EmulatorScreen from "./components/emulator_screen"
-import { ThemeProvider, makeStyles } from "@mui/styles"
+import { ThemeProvider } from "@mui/styles"
 import { createTheme } from "@mui/material/styles"
 
 import "./App.css"
 
-const development =
-  !process.env.NODE_ENV || process.env.NODE_ENV === "development"
+const development = !process.env.NODE_ENV || process.env.NODE_ENV === "development"
 
 var EMULATOR_GRPC =
   window.location.protocol +
@@ -21,14 +20,6 @@ if (development) {
 }
 
 console.log(`Connecting to grpc at ${EMULATOR_GRPC}`)
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    // some CSS that accesses the theme
-  },
-}))
-
-const theme = createTheme({})
 
 const router = createBrowserRouter([
   {
@@ -46,6 +37,7 @@ const router = createBrowserRouter([
   },
 ])
 
+const theme = createTheme({})
 export default function App() {
   return (
     <ThemeProvider theme={theme}>
