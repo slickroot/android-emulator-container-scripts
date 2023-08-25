@@ -35,6 +35,7 @@ const installNewAPK = async (req, res, next) => {
     await exec('adb connect emulator:5555; adb install ./games/game.apk')
     next()
   } catch (error) {
+    console.log('Error:', error.message)
     next(error)
   }
 }
@@ -52,9 +53,19 @@ const launchAPK = async (req, res, next) => {
   }
 }
 
+const closeAllApps = async (_req, res, next) => {
+  try {
+    await exec('./scripts/close_all_apps.sh')
+    res.end()
+  } catch (error) {
+    next(error)
+  }
+}
+
 module.exports = {
   launchAPK,
   saveNewAPK,
+  closeAllApps,
   installNewAPK,
   getInstalledAPKs,
 }
