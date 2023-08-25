@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react"
-import withStyles from "@mui/styles/withStyles"
+import React, { useState, useEffect } from "react"
 import { useLoaderData } from "react-router-dom"
 
-import { launchAPK } from "../installapk/apkInstaller"
+import { launchAPK, closeAllApps } from "../installapk/apkInstaller"
 
 import AppBar from "@mui/material/AppBar"
 import Box from "@mui/material/Box"
@@ -14,88 +13,57 @@ import Grid from "@mui/material/Grid"
 import IconButton from "@mui/material/IconButton"
 import ImageIcon from "@mui/icons-material/Image"
 import OndemandVideoIcon from "@mui/icons-material/OndemandVideo"
-import Slider from "@mui/material/Slider"
-import VolumeDown from "@mui/icons-material/VolumeDown"
-import VolumeUp from "@mui/icons-material/VolumeUp"
 import LocationOnIcon from "@mui/icons-material/LocationOn"
-import React from "react"
 import Toolbar from "@mui/material/Toolbar"
 import Typography from "@mui/material/Typography"
 import Snackbar from "@mui/material/Snackbar"
 import Alert from "@mui/material/Alert"
 import InstallAPKComponent from "../installapk/InstallAPKComponent"
-import GamesList from "../components/games_list"
+import GamesList from "../components/GamesList"
+import VolumeControl from "../components/VolumeControl"
 
-const styles = (theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    flexGrow: 1,
-  },
-  nofocusborder: {
-    outline: "none !important;",
-  },
-  paper: {
-    marginTop: theme.spacing(4),
-    display: "flex",
-    flexDirection: "column" as "column",
-    alignItems: "center",
-  },
-})
-
-const WhiteSlider = withStyles({
-  thumb: {
-    color: "white",
-  },
-  track: {
-    color: "white",
-  },
-  rail: {
-    color: "white",
-  },
-})(Slider)
-
-type LoaderData = {
+interface LoaderData {
   apkPackage: string
 }
 
-function EmulatorScreen({ classes, uri }) {
+interface IProps {
+  uri: string
+}
+
+export default function EmulatorScreen({ uri }: IProps): JSX.Element {
   const [view, setView] = useState("webrtc")
-  const [error_snack, setError_Snack] = useState(false)
-  const [error_msg] = useState("")
+  const [errorSnack, setErrorSnack] = useState(false)
+  const [errorMessage, setErrorMessage] = useState("")
   const [emuState, setEmuState] = useState("connecting")
   const [muted, setMuted] = useState(true)
   const [volume, setVolume] = useState<number | number[]>(0.0)
   const [hasAudio, setHasAudio] = useState(false)
   const [gps, setGps] = useState({ latitude: 37.4221, longitude: -122.0841 })
   const [loading, setLoading] = useState(false)
-  const loaderData = useLoaderData() as LoaderData
+  const loaderData = useLoaderData() as LoaderData | undefined
 
   useEffect(() => {
     console.log("Something changed?")
-    if (loaderData) {
+    if (loaderData != null) {
       console.log(loaderData.apkPackage)
-      launchAPK(loaderData.apkPackage)
+      void launchAPK(loaderData.apkPackage)
+    } else {
+      void closeAllApps()
     }
   }, [loaderData])
 
-  const onAudioStateChange = (s: boolean) => {
+  const onAudioStateChange = (s: boolean): void => {
     console.log("Received an audio state change from the emulator.")
     setHasAudio(s)
   }
 
-  const onError = () => {
-    // TODO: Fix this!!!!!
-    // setError_Msg("Low level gRPC error: " + JSON.stringify(err))
-    // setError_Snack(true)
+  const onError = (err: Error): void => {
+    setErrorMessage("Low level gRPC error: " + JSON.stringify(err))
+    setErrorSnack(true)
   }
 
-  const updateLocation = () => {
-    if (navigator.geolocation) {
+  const updateLocation = (): void => {
+    if (navigator.geolocation != null) {
       navigator.geolocation.getCurrentPosition((location) => {
         const loc = location.coords
         setGps({ latitude: loc.latitude, longitude: loc.longitude })
@@ -103,55 +71,39 @@ function EmulatorScreen({ classes, uri }) {
     }
   }
 
-  const handleClose = () => {
-    setError_Snack(false)
-  }
-
-  const handleVolumeChange = (_event: Event, newVolume: number | number[]) => {
-    const muted = newVolume === 0
-    setVolume(newVolume)
-    setMuted(muted)
+  const handleClose = (): void => {
+    setErrorSnack(false)
   }
 
   return (
-    <div className={classes.root}>
+    <Box flexGrow={1}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" className={classes.title}>
+          <Typography variant="h6" flexGrow={1}>
             Using emulator view: {view}
           </Typography>
           <div style={{ flexGrow: 1 }}>
-            <InstallAPKComponent loading={loading} setLoading={setLoading} />
+            <InstallAPKComponent
+              loading={loading}
+              setLoading={setLoading}
+              setErrorSnack={setErrorSnack}
+              setErrorMessage={setErrorMessage}
+            />
           </div>
 
           {hasAudio ? ( // Only display volume control if this emulator supports audio.
-            <Box width={200} paddingTop={1}>
-              <Grid container spacing={2}>
-                <Grid item>
-                  <VolumeDown />
-                </Grid>
-                <Grid item xs>
-                  <WhiteSlider
-                    value={volume}
-                    onChange={handleVolumeChange}
-                    min={0.0}
-                    max={1.0}
-                    step={0.01}
-                    aria-labelledby="continuous-slider"
-                  />
-                </Grid>
-                <Grid item>
-                  <VolumeUp />
-                </Grid>
-              </Grid>
-            </Box>
+            <VolumeControl
+              setMuted={setMuted}
+              volume={volume}
+              setVolume={setVolume}
+            />
           ) : (
             // No audio track, so no volume slider.
-            <div />
+            <></>
           )}
 
-          <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
+          <div />
+          <div>
             <IconButton
               aria-label="Get current location"
               color="inherit"
@@ -163,7 +115,9 @@ function EmulatorScreen({ classes, uri }) {
             <IconButton
               aria-label="Switch to webrtc"
               color="inherit"
-              onClick={() => setView("webrtc")}
+              onClick={() => {
+                setView("webrtc")
+              }}
               size="large"
             >
               <OndemandVideoIcon />
@@ -171,7 +125,9 @@ function EmulatorScreen({ classes, uri }) {
             <IconButton
               aria-label="Switch to screenshots"
               color="inherit"
-              onClick={() => setView("png")}
+              onClick={() => {
+                setView("png")
+              }}
               size="large"
             >
               <ImageIcon />
@@ -188,7 +144,14 @@ function EmulatorScreen({ classes, uri }) {
         </Toolbar>
       </AppBar>
 
-      <div className={classes.paper}>
+      <Box
+        sx={{
+          mt: 4,
+          display: "flex",
+          flexDirection: "column" as "column",
+          alignItems: "center",
+        }}
+      >
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6}>
             <Container maxWidth="sm">
@@ -210,17 +173,15 @@ function EmulatorScreen({ classes, uri }) {
             <GamesList refresh={!loading} />
           </Grid>
         </Grid>
-      </div>
+      </Box>
       <Box mt={8}>
         <Copyright />
       </Box>
-      <Snackbar open={error_snack} autoHideDuration={6000}>
+      <Snackbar open={errorSnack} autoHideDuration={6000}>
         <Alert onClose={handleClose} severity="error">
-          {error_msg}
+          {errorMessage}
         </Alert>
       </Snackbar>
-    </div>
+    </Box>
   )
 }
-
-export default withStyles(styles)(EmulatorScreen)

@@ -1,4 +1,4 @@
-const { installNewAPK, saveNewAPK, getInstalledAPKs, launchAPK } = require('./handlers')
+const { installNewAPK, saveNewAPK, getInstalledAPKs, launchAPK, closeAllApps } = require('./handlers')
 const express = require('express')
 const cors = require('cors')
 const app = express()
@@ -12,6 +12,7 @@ app.post('/api', installNewAPK, saveNewAPK)
 app.get('/api', getInstalledAPKs)
 
 app.post('/api/launch', launchAPK)
+app.delete('/api/launch', closeAllApps)
 
 app.use((err, req, res, next) => {
   res.status(500).json(err)

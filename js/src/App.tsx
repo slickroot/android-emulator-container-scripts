@@ -6,9 +6,9 @@ import { createTheme } from "@mui/material/styles"
 
 import "./App.css"
 
-const development = !process.env.NODE_ENV || process.env.NODE_ENV === "development"
+const development = process.env.NODE_ENV === "development"
 
-var EMULATOR_GRPC =
+let EMULATOR_GRPC =
   window.location.protocol +
   "//" +
   window.location.hostname +
@@ -38,7 +38,7 @@ const router = createBrowserRouter([
 ])
 
 const theme = createTheme({})
-export default function App() {
+export default function App(): JSX.Element {
   return (
     <ThemeProvider theme={theme}>
       <RouterProvider router={router} />

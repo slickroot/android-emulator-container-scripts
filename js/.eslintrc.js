@@ -1,10 +1,14 @@
 module.exports = {
   env: {
     browser: true,
-    node: true,
+    es2021: true,
   },
-  extends: ["eslint:recommended", "plugin:react/recommended", "prettier"],
-  plugins: ["prettier"],
+  settings: {
+    react: {
+      version: "detect"
+    },
+  },
+  extends: ["standard-with-typescript", "plugin:react/recommended", "prettier"],
   overrides: [
     {
       env: {
@@ -19,10 +23,12 @@ module.exports = {
   parserOptions: {
     ecmaVersion: "latest",
     sourceType: "module",
+    project: './tsconfig.json',
     ecmaFeatures: {
       jsx: true,
     },
   },
+  plugins: ["react", "prettier"],
   rules: {
     "prettier/prettier": ["error", { semi: false }],
     indent: ["error", 2],
